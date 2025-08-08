@@ -12,7 +12,7 @@ export const registerUser = createAsyncThunk(
 
   async (formData) => {
     const response = await axios.post(
-      "http://localhost:7000/api/user/register",
+      `${import.meta.env.VITE_BACKEND_URL}/user/register`,
       formData,
       {
         withCredentials: true,
@@ -28,7 +28,7 @@ export const loginUser = createAsyncThunk(
 
   async (formData) => {
     const response = await axios.post(
-      "http://localhost:7000/api/user/login",
+      `${import.meta.env.VITE_BACKEND_URL}/user/login`,
       formData,
       {
         withCredentials: true,
@@ -44,7 +44,7 @@ export const logoutUser = createAsyncThunk(
 
   async () => {
     const response = await axios.post(
-      "http://localhost:7000/api/user/logout",
+      `${import.meta.env.VITE_BACKEND_URL}/user/logout`,
       {},
       {
         withCredentials: true,
@@ -60,7 +60,7 @@ export const checkAuth = createAsyncThunk(
 
   async () => {
     const response = await axios.get(
-      "http://localhost:7000/api/user/middleware",
+      `${import.meta.env.VITE_BACKEND_URL}/user/middleware`,
       {
         withCredentials: true,
         headers: {

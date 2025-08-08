@@ -10,7 +10,7 @@ export const createJobPost = createAsyncThunk(
     async (formData) => {                                                                                                                                                                                                                   
 
         const response = await axios.post(
-            "http://localhost:7000/api/job-creator/create-job",
+            `${import.meta.env.VITE_BACKEND_URL}/job-creator/create-job`,
             formData,
             {
                 withCredentials: true,
@@ -24,7 +24,7 @@ export const getAllJobs = createAsyncThunk(
     "jobCreator/getAllJobs",                                                                          
     async () => {                                                                                       
         const response = await axios.get(                                                               
-            "http://localhost:7000/api/job-creator/all-jobs",                                            
+            `${import.meta.env.VITE_BACKEND_URL}/job-creator/all-jobs`,                                            
             { withCredentials: true }                                                                   
         );                                                                                               
         return response.data;                                                                           
@@ -35,7 +35,7 @@ export const getJobById = createAsyncThunk(
     async (id) => {                                                   
 
         const response = await axios.get(
-            `http://localhost:7000/api/job-creator/${id}`,
+            `${import.meta.env.VITE_BACKEND_URL}/job-creator/${id}`,
             { withCredentials: true }
         );
         return response.data;
@@ -47,7 +47,7 @@ export const updateJob = createAsyncThunk(
     "jobCreator/updateJob",                                                                         
     async ({ id, formData }) => {                                                                    
         const response = await axios.put(                                                               
-            `http://localhost:7000/api/job-creator/${id}`,                                               
+            `${import.meta.env.VITE_BACKEND_URL}/job-creator/${id}`,                                               
             formData,                                                                                   
             { withCredentials: true }                                                                   
         );                                                                                               
@@ -62,7 +62,7 @@ export const deleteJob = createAsyncThunk(
     async (id) => {                                                                                                                 
 
         const response = await axios.delete(
-            `http://localhost:7000/api/job-creator/${id}`,
+            `${import.meta.env.VITE_BACKEND_URL}/job-creator/${id}`,
             { withCredentials: true }
         );
         return response.data;
