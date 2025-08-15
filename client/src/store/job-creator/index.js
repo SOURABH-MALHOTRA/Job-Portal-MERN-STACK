@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 const initialState = {
     jobPosts: [],
-    singlejob: null,
+    Userjobs: null,
+    ApplicantsForCreator: [],
                          
 };
 export const createJobPost = createAsyncThunk(
@@ -30,8 +31,8 @@ export const getAllJobs = createAsyncThunk(
         return response.data;                                                                           
     }                                                                                                  
 );
-export const getJobById = createAsyncThunk(
-    "jobCreator/getJobById",
+export const getJobByUserId = createAsyncThunk(
+    "jobCreator/getJobByUserId",
     async (id) => {                                                   
 
         const response = await axios.get(
@@ -68,7 +69,19 @@ export const deleteJob = createAsyncThunk(
         return response.data;
     }                                                                       
 
-);                                                                      
+);      
+
+export const getApplicantsForCreator = createAsyncThunk(
+    "jobCreator/getApplicantsForCreator",   
+    async (id) => {
+        const response = await axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/job-creator/applicants/${id}`,
+            { withCredentials: true }
+        );
+        return response.data;
+    }           
+);      
+
 
 const jobCreatorSlice = createSlice({                                                               
     name: "jobCreator",
@@ -80,9 +93,14 @@ const jobCreatorSlice = createSlice({
             .addCase(getAllJobs.fulfilled, (state, action) => {
                 state.jobPosts = action.payload.Alljobs;
             })
-            .addCase(getJobById.fulfilled, (state, action) => {
-                state.singlejob = action.payload.job;
+            .addCase(getJobByUserId.fulfilled, (state, action) => {
+                state.Userjobs = action.payload.job;
             })
+            .addCase(getApplicantsForCreator.fulfilled, (state, action) => {
+                state.ApplicantsForCreator = action.payload.applicants;
+            }   
+            )               
+            
 
     },
 });

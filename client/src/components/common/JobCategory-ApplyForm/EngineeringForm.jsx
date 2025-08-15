@@ -1,7 +1,20 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { CreateApplicant } from "@/store/job-seeker/job-application-form";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
+import axios from "axios";
+function EngineeringForm({ category, jobId }) {
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const [ ResumeUploadUrl, setrResumeUploadUrl ] = useState("");
+ 
 
-function EngineeringForm() {
   const [formData, setFormData] = useState({
+    userId: user.id,
+    jobId: jobId,
+    role: category,
     fullName: "",
     github: "",
     resume: null,
@@ -14,6 +27,26 @@ function EngineeringForm() {
     phone: "",
   });
 
+
+ useEffect(() => {
+    if (formData.resume !== null) uploadResumeToCloudinary();
+  }, [formData.resume]);
+
+
+  async function uploadResumeToCloudinary() {
+    const data = new FormData();
+    data.append("my_file", formData.resume);
+    const response = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/job-seeker/upload-resume`,
+      data
+    );
+    console.log("Cloudinary Response:", response.data);
+
+    if (response?.data?.success) {
+      setrResumeUploadUrl(response.data.result.secure_url);
+    }
+  }
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -22,14 +55,50 @@ function EngineeringForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form Data:", formData);
-    // Add form submission logic here
-  };
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!ResumeUploadUrl) {
+    toast.error("Please wait until resume upload completes");
+    return;
+  }
+
+  dispatch(
+    CreateApplicant({
+      ...formData,
+      resume: ResumeUploadUrl, // only send URL
+    })
+  ).then((data) => {
+    if (data?.payload?.success) {
+      toast.success(data?.payload?.message);
+      setFormData({
+        userId: user.id,
+        jobId: jobId,
+        role: category,
+        fullName: "",
+        github: "",
+        resume: null,
+        experience: "",
+        cpi: "",
+        tenthMarks: "",
+        twelfthMarks: "",
+        branch: "",
+        email: "",
+        phone: "",
+      });
+      setrResumeUploadUrl("");
+    } else {
+      toast.error(data?.payload?.message);
+    }
+  });
+};
+
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 shadow rounded">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 bg-white p-6 shadow rounded"
+    >
       <h2 className="text-xl font-semibold mb-4">Apply for Engineering Role</h2>
 
       <div>
@@ -69,7 +138,9 @@ function EngineeringForm() {
       </div>
 
       <div>
-        <label className="block mb-1 text-sm font-medium">GitHub Profile *</label>
+        <label className="block mb-1 text-sm font-medium">
+          GitHub Profile *
+        </label>
         <input
           type="url"
           name="github"
@@ -93,7 +164,9 @@ function EngineeringForm() {
       </div>
 
       <div>
-        <label className="block mb-1 text-sm font-medium">Years of Experience *</label>
+        <label className="block mb-1 text-sm font-medium">
+          Years of Experience *
+        </label>
         <input
           type="number"
           name="experience"
@@ -129,7 +202,9 @@ function EngineeringForm() {
       </div>
 
       <div>
-        <label className="block mb-1 text-sm font-medium">10th Percentage *</label>
+        <label className="block mb-1 text-sm font-medium">
+          10th Percentage *
+        </label>
         <input
           type="text"
           name="tenthMarks"
@@ -141,7 +216,9 @@ function EngineeringForm() {
       </div>
 
       <div>
-        <label className="block mb-1 text-sm font-medium">12th Percentage *</label>
+        <label className="block mb-1 text-sm font-medium">
+          12th Percentage *
+        </label>
         <input
           type="text"
           name="twelfthMarks"
@@ -151,8 +228,6 @@ function EngineeringForm() {
           className="w-full p-2 border rounded"
         />
       </div>
-
-      
 
       <button
         type="submit"

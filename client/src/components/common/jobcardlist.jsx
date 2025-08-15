@@ -208,7 +208,7 @@ function JobCardList({ jobPosts }) {
                 
                 <button 
                   className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95" 
-                  onClick={() => navigate(`/ApplyForm/${job.jobCategory}`)}
+                  onClick={() => navigate(`/jobseeker/applyform/${job.jobCategory}/${job._id}`)}
                 >
                   Apply Now
                 </button>

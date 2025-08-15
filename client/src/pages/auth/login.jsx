@@ -25,13 +25,14 @@ const dispatch= useDispatch();
     dispatch(loginUser(formData)).then((data) => {
       if (data?.payload?.success) {
         toast.success(data?.payload?.message || "Login successful");
-        if (user?.role === "Job Creator" && isAuthenticated=== true) {
-          navigate("/jobcreator");
-        } else if (user?.role === "Job Seeker" && isAuthenticated=== true) {
-          navigate("/jobseeker");
-        } else {
-          navigate("/");
-        }
+      // const role = data?.payload?.user?.role;
+      // if (role === "Job Creator") {
+      //   navigate("/jobcreator");
+      // } else if (role === "Job Seeker") {
+      //   navigate("/jobseeker");
+      // } else {
+      //   navigate("/");
+      // }
       } else {
         toast.error(data?.payload?.message || "Login failed");
         
@@ -93,7 +94,7 @@ const dispatch= useDispatch();
             <div className="mt-4">
               <Link
                 className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition-colors"
-                to="/auth/register"
+                to="/register"
               >
                 Create new account
                 <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

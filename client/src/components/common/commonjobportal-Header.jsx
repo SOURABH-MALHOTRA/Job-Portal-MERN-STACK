@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { BriefcaseBusiness } from 'lucide-react';
 // import JobCardList from './jobcardlist';
@@ -11,9 +11,16 @@ const CommonJobPortal = [
   { id: "Register", label: 'Register', href: '/register' }
 ];
 
+const JobCreator = [
+  { id: "Home", label: 'Home', href: '/jobcreator' },
+  { id: "MyJobs", label: 'My Jobs', href: '/jobcreator/jobcreated' },
+  { id: "Applications", label: 'Applications', href: '/jobcreator/applications' },
+  { id: "Sign Out", label: 'Sign Out', href: '/signout' }
+];
 const JobPortalCommon = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // const {jobPosts} = useSelector((state) => state.jobCreator);
+  const { user } = useSelector((state) => state.auth);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -40,7 +47,15 @@ const JobPortalCommon = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
-              {CommonJobPortal.map((item) => (
+              {user?.role=="Job Creator"? JobCreator.map((item) => (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  className="text-white hover:text-white hover:bg-slate-700 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                >
+                  {item.label}
+                </a>
+              )):   CommonJobPortal.map((item) => (
                 <a
                   key={item.id}
                   href={item.href}
@@ -54,7 +69,7 @@ const JobPortalCommon = () => {
 
           {/* Desktop CTA Button */}
           <div className="hidden md:block">
-          <a href='/postjob'>
+          <a href={user?.role === "Job Creator" ? "/jobcreator/postjob" : "/login"}>
             <button
               type="button"
               className="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-sm px-6 py-2.5 transition-colors duration-200 focus:ring-4 focus:ring-blue-300 focus:outline-none"
@@ -85,7 +100,16 @@ const JobPortalCommon = () => {
       {isMenuOpen && (
         <div className="md:hidden border-t border-slate-700">
           <div className="px-2 pt-2 pb-3 space-y-1 bg-slate-900">
-            {CommonJobPortal.map((item) => (
+            {user?.role=="Job Creator"? JobCreator.map((item) => (
+              <a
+                key={item.id}
+                href={item.href}
+                className="text-gray-300 hover:text-white hover:bg-slate-700 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+              </a>
+            )):CommonJobPortal.map((item) => (
               <a
                 key={item.id}
                 href={item.href}

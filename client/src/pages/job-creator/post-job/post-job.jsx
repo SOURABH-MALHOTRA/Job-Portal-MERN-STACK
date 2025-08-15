@@ -6,8 +6,20 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { createJobPost } from "@/store/job-creator/index.js";
 import { getAllJobs } from "@/store/job-creator/index.js";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 function PostJob() {   
+  const { user } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if ( user?.id) {
+        setFormData((prev) => ({
+            ...prev,
+            userId: user.id
+        }));
+    }
+}, [user]);
     const initialState = {
+        userId: "" ,
         company: "",
         jobCategory: "",                            
         title: "",                     

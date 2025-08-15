@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 const authRoutes = require("./routes/auth/auth.js");
 const jobCreatorRoutes = require("./routes/job-creator/index.js");
-
+const jobApplicantRoutes = require("./routes/job-seeker/job-applicant-form/index.js")
 
 mongoose
   .connect(process.env.db_url)
@@ -35,6 +35,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/api/user/",authRoutes);
 app.use("/api/job-creator", jobCreatorRoutes);
+app.use("/api/job-seeker", jobApplicantRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to JobNest API");   })

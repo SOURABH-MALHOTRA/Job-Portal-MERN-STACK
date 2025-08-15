@@ -8,8 +8,8 @@ import { BriefcaseBusiness } from 'lucide-react';
 const CommonJobPortal = [
   { id: "Home", label: 'Home', href: '/jobseeker' },
   { id: "Jobs", label: 'Jobs', href: '/jobseeker/jobs' },
-  { id: "My Applications", label: 'My Applications', href: '#' },
-  { id: "Sign Out", label: 'Sign Out', href: '#' }
+  { id: "My Applications", label: 'My Applications', href: '/jobseeker/myapplications' },
+  { id: "Sign Out", label: 'Sign Out', href: '/signout' }
 ];
 
 const JobSeekerHeader = () => {
