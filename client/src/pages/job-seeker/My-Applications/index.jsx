@@ -61,13 +61,13 @@ const MyApplications = () => {
         </div>
 
         {/* Applications List */}
-        <div className="space-y-4">
+        <div className="space-y-4 ">
           {AllJobApplicationByUserId.map((application) => (
             <div
               key={application._id}
               className="bg-white rounded-lg shadow hover:shadow-md transition-shadow"
             >
-              <div className="p-6">
+              <div className="p-8">
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
                   {/* Main Info */}
                   <div className="flex-1 mb-4 lg:mb-0">
@@ -75,7 +75,11 @@ const MyApplications = () => {
                       <h3 className="text-xl font-semibold text-blue-700 mb-2 sm:mb-0">
                         {application.jobId.title}
                       </h3>
-                      <span className="bg-blue-200 text-gray-700 rounded-lg px-2 ">Applied</span>
+                      <div className="flex-shrink-0">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200">
+                        ✓ Applied
+                      </span>
+                    </div>
                     </div>
 
                     <p className="text-lg text-black mb-3">
@@ -125,20 +129,21 @@ const MyApplications = () => {
                   {/* Resume Actions */}
                   <div className="lg:ml-6 flex flex-col sm:flex-row gap-2">
                     <button
-                      onClick={() =>
-                        handleResumeAction("download", application.resume)
-                      }
-                      className="flex items-center justify-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors"
-                    >
-                      <Download className="w-4 h-4" />
-                      <a
-                        href={application.resume}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        onClick={() =>
+                          handleResumeAction("download", application.resume)
+                        }
+                        className="flex items-center justify-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                       >
-                        Download Resume
-                      </a>
-                    </button>
+                        <Download className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <a
+                          href={application.resume} download
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white no-underline"
+                        >
+                          Download Resume
+                        </a>
+                      </button>
                   </div>
                 </div>
               </div>
